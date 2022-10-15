@@ -1,23 +1,29 @@
 name: Action Workflow
-
-on: 
-  repository_dispatch:
-    types: [build]
-  # schedule: 
-  #   - cron: "0/5 * * * *"
-  #   - cron: "0/6 * * * *"  
-  # push:
+on:
+  push:
+    branches:
+      - master
+      - feature/*
+      - feature/**
+      - "!feature/feactC"
+  tags:
+    - v1.*
+  paths:
+    - "**.js"
+    - "!filename.js"
   pull_request:
-    types: [closed , opened , reopened , assigned]
-
-
+    types:
+      - closed
+      - opened
+      - reopened
+      - assigned
 jobs:
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
       - name: payload
         run: echo ${{ github.event.client_payload.env }}
-      - name : List Files
+      - name: List Files
         run: |
           pwd
           ls -a
@@ -27,7 +33,7 @@ jobs:
           echo "${{github.token}}"
       - name: checkout
         uses: actions/checkout@v3
-      - name : List Files after checkout
+      - name: List Files after checkout
         run: |
           pwd
           ls -a
